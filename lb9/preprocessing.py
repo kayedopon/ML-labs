@@ -10,15 +10,15 @@ def get_resNet18_transforms():
         transforms.TrivialAugmentWide(
             interpolation=transforms.InterpolationMode.BILINEAR
         ),
-        transforms.Normalize(mean, std),
         transforms.ToTensor(),
+        transforms.Normalize(mean, std),
     ])
 
     test_transforms = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
-        transforms.Normalize(mean, std),
         transforms.ToTensor(),
+        transforms.Normalize(mean, std),
     ])
 
     return train_transforms, test_transforms
@@ -33,15 +33,15 @@ def get_resNet50_transforms():
         transforms.TrivialAugmentWide(
             interpolation=transforms.InterpolationMode.BILINEAR
         ),
-        transforms.Normalize(mean, std),
         transforms.ToTensor(),
+        transforms.Normalize(mean, std),
     ])
 
     test_transforms = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
-        transforms.Normalize(mean, std),
         transforms.ToTensor(),
+        transforms.Normalize(mean, std),
     ])
 
     return train_transforms, test_transforms
