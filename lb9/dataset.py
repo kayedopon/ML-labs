@@ -10,7 +10,7 @@ class SkinDataset(Dataset):
     def __len__(self):
         return len(self.images)
     
-    def __getitem(self, idx):
+    def __getitem__(self, idx):
         img = self.images[idx]
         label = self.labels[idx]
 

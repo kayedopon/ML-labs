@@ -7,6 +7,8 @@ from torchsummary import summary
 
 import models
 import preprocessing
+from utils import get_set
+from dataset import SkinDataset
 
 
 def main():
@@ -31,9 +33,12 @@ def main():
     resnet18 = models.get_resNet18(num_cls)
     train_transforms, test_transforms = preprocessing.get_resNet18_transforms()
     
-    X_train = train_transforms(X_train)
-    X_eval, X_test = test_transforms(X_eval), test_transforms(X_test)
+    X_train = SkinDataset(X_train, y_train, train_transforms)
+    X_eval = SkinDataset(X_eval, y_eval, test_transforms)
+    X_test = SkinDataset(X_test, y_test, test_transforms)
 
+    print(X_train[0])
+    print(X_train[0][0].shape)
 
 if __name__ == "__main__":
     main()
