@@ -16,6 +16,9 @@ def main():
     torch.manual_seed(42)
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
+    if torch.cuda.is_available():
+        print(torch.cuda.get_device_name(0))
+
     path = Path(r"C:\studies\uni\semester 4\Machine Learning\lab works\lb9\data")
 
     train_dir = path / "train"
