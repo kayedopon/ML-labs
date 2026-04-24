@@ -23,3 +23,17 @@ def get_resNet50(num_cls:int):
 
     resnet.fc = nn.Linear(in_features=resnet.fc.in_features, out_features=num_cls)
     return resnet
+
+def get_effNet_b0(num_cls:int):
+
+    weights = models.EfficientNet_B0_Weights.DEFAULT
+    effnet = models.efficientnet_b0(weights)
+
+    for param in effnet.parameters():
+        param.requires_grad = False
+
+    effnet.classifier = nn.Sequential(
+        nn.Dropout(p=0.2, inplce=True),
+        nn.Linear(in_features=1280, out_features=num_cls, bias=True)
+    )
+    return effnet
