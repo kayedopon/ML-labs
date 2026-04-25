@@ -33,7 +33,7 @@ def get_effNet_b0(num_cls:int):
         param.requires_grad = False
 
     effnet.classifier = nn.Sequential(
-        nn.Dropout(p=0.2, inplce=True),
+        nn.Dropout(p=0.2, inplace=True),
         nn.Linear(in_features=1280, out_features=num_cls, bias=True)
     )
     return effnet

@@ -24,6 +24,28 @@ def plot_charts(train_dir):
     plt.title("Image resolution distribution")
     plt.show()
 
+def plot_results(results, epochs):
+    keys = [k for k in results.keys() if k not in ["report", "duration"]]
+    n = len(keys)
+    cols = 2
+    rows = (n + 1) // 2
+
+    fig, axis = plt.subplots(rows, cols, figsize=(17, 10))
+
+    for i, (k, v) in enumerate(results.items()):
+        if k in ["report", "duration"]:
+            continue
+        row = i // cols
+        col = i % cols
+
+        axis[row, col].plot(list(range(epochs)), v)
+        axis[row, col].set_xlabel('Epoch')
+        axis[row, col].set_ylabel(f'{k} score')
+        axis[row, col].set_xticks(range(epochs))
+        axis[row, col].set_title(f"{k} ({'Train' if 'train' in k else 'Eval'})")
+    plt.tight_layout()
+    plt.show()
+
 def get_set(path, class_to_idx):
     X, y = [], []
     for cls in os.listdir(path):
