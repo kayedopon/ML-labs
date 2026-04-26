@@ -1,3 +1,5 @@
 *.csv filter=lfs diff=lfs merge=lfs -text
 .csv filter=lfs diff=lfs merge=lfs -text
 lb7/cyberbullying_tweets.csv filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
