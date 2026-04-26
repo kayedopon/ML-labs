@@ -47,17 +47,3 @@ def get_statistics(train_path: Path):
 
     return mean, std
 
-def get_class_weights(y_train):
-    counts = Counter(y_train)
-
-    class_counts = torch.tensor(
-        [counts[i] for i in range(len(counts))],
-        dtype=torch.float
-    )
-
-    weights = 1.0 / class_counts
-    print(weights)
-    weights = weights / weights.sum() * len(class_counts)
-    print(weights)
-    return weights
-
