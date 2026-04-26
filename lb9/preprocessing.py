@@ -14,7 +14,7 @@ def get_resNet18_transforms():
     ])
 
     test_transforms = transforms.Compose([
-        transforms.Resize(256),
+        transforms.Resize(256, interpolation=transforms.InterpolationMode.BILINEAR),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize(mean, std),
@@ -36,7 +36,7 @@ def get_resNet50_transforms():
     ])
 
     test_transforms = transforms.Compose([
-        transforms.Resize(232),
+        transforms.Resize(232, interpolation=transforms.InterpolationMode.BILINEAR),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize(mean, std),
@@ -58,7 +58,7 @@ def get_effnet_b0_transforms():
     ])
 
     test_transforms = transforms.Compose([
-        transforms.Resize(256),
+        transforms.Resize(256, interpolation=transforms.InterpolationMode.BICUBIC),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize(mean, std),
