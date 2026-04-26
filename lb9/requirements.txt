@@ -6,3 +6,5 @@ Pillow
 torch
 torchvision
 torchsummary
+grad-cam
+seaborn
