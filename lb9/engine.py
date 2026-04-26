@@ -144,3 +144,21 @@ def train(model: nn.Module,
     results["duration"] = time.time() - start
 
     return results
+
+def inference(model, test_loader, device):
+    model.eval()
+    
+    all_preds = []
+    all_labels = []
+
+    with torch.inference_mode():
+        for X, y in test_loader:
+            X = X.to(device)
+
+            logits = model(X)
+            preds = torch.argmax(logits, dim=1)
+
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(y.numpy())
+
+    return all_preds, all_labels

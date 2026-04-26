@@ -1,15 +1,23 @@
 import torch
 import os
+import utils
+import matplotlib.pyplot as plt
 
 from pathlib import Path
 from sklearn.model_selection import train_test_split, KFold
 from torchsummary import summary
+from torch.utils.data import DataLoader
+from sklearn.metrics import confusion_matrix
 
 from experiment import ExperimentConfig, run_experiment
 from utils import get_set, plot_results, set_seed
+from models import get_resNet18
+from preprocessing import get_resNet18_transforms
+from dataset import SkinDataset
+from engine import inference
 
 
-def main():
+def start_experiment():
     set_seed(42)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -125,6 +133,42 @@ def main():
     for r in all_results:
         print(r)
 
+def main():
+    set_seed(42)
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    if torch.cuda.is_available():
+        print(torch.cuda.get_device_name(0))
+    
+    model_path = r"results\resnet18\resnet18_weighted_focal.pth"
+
+    test_dir = r"data\Test"
+    classes = sorted(os.listdir(test_dir))
+    num_classes = len(classes)
+
+    class_to_idx = {
+        cls_name: i
+        for i, cls_name in enumerate(classes)
+    }
+
+    X_test, y_test = get_set(test_dir, class_to_idx) 
+    model = get_resNet18(num_classes)
+    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+    model.to(device)
+
+    _, test_transforms = utils.get_transforms("resnet18")
+
+    test_data = SkinDataset(X_test, y_test, test_transforms)
+
+    test_loader = DataLoader(
+        test_data,
+        batch_size=32,
+    )
+
+    preds, labels = inference(model, test_loader, device)
+
+    utils.plot_confusion_matrix(labels, preds, classes) 
 
 if __name__ == "__main__":
     main()

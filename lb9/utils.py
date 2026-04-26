@@ -1,6 +1,9 @@
 from collections import Counter
 from PIL import Image
 from torch.utils.data import WeightedRandomSampler
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -55,6 +58,30 @@ def plot_results(results, epochs, save=False, path=None):
     
     if save == True:
         plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()
+
+def plot_confusion_matrix(y_true, y_pred, class_names, save_path=None):
+    cm = confusion_matrix(y_true, y_pred)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(
+        cm,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        xticklabels=class_names,
+        yticklabels=class_names
+    )
+
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
+    plt.title("Confusion Matrix")
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=300)
         plt.close()
     else:
         plt.show()
@@ -145,3 +172,4 @@ def get_sampler(y_train):
         num_samples=len(sample_weights),
         replacement=True
     )
+    
