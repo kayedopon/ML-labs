@@ -49,7 +49,7 @@ def train_step(model: nn.Module,
     results["accuracy"] = balanced_accuracy_score(all_labels, all_preds)
     results["loss"] /= len(loader)
     results["roc_auc"] = roc_auc_score(all_labels, all_probs, multi_class='ovr', average='macro')
-    results["f1"] = f1_score(all_labels, all_preds, average="macro")
+    results["f1"] = f1_score(all_labels, all_preds, average="macro", zero_division=0)
 
     return results
 
@@ -92,9 +92,9 @@ def eval_step(model: nn.Module,
 
         results["accuracy"] = balanced_accuracy_score(all_labels, all_preds)
         results["loss"] /= len(loader)
-        results["f1"] = f1_score(all_labels, all_preds, average="macro")
+        results["f1"] = f1_score(all_labels, all_preds, average="macro", zero_division=0)
         results["roc_auc"] = roc_auc_score(all_labels, all_probs, multi_class='ovr', average='macro')
-        results["report"] = classification_report(all_labels, all_preds)
+        results["report"] = classification_report(all_labels, all_preds, zero_division=0)
 
     return results
 
@@ -104,6 +104,7 @@ def train(model: nn.Module,
         loss: nn.Module,
         optim: torch.optim,
         scheduler: torch.optim.lr_scheduler,
+        mixup,
         epochs: int,
         device: str):
     results = {
@@ -132,7 +133,7 @@ def train(model: nn.Module,
         results["accuracy_train"].append(train_res["accuracy"])
         results["f1_train"].append(train_res["f1"])
         results["loss_train"].append(train_res["loss"])
-        results["roc_auc_train"].append(eval_res["roc_auc"])
+        results["roc_auc_train"].append(train_res["roc_auc"])
 
         results["accuracy_eval"].append(eval_res["accuracy"])
         results["f1_eval"].append(eval_res["f1"])
